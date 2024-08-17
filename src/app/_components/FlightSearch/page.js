@@ -124,7 +124,8 @@ const FlightSearch = () => {
                         onChange={handleDepartureChange}
                         options={{
                             dateFormat: 'Y-m-d',
-                            minDate: "today"
+                            minDate: "today",
+                            disableMobile: true
                         }}
                         render={({ defaultValue, value, ...props }, ref) => {
                             return (
@@ -145,11 +146,12 @@ const FlightSearch = () => {
                 <div className="form-group mb-0">
                     <Flatpickr
                         className="form-control fw-bold choosedate"
-                        value={departure}
+                        value={returnD}
                         onChange={handleReturnDateChange}
                         options={{
                             dateFormat: 'Y-m-d',
-                            minDate: "today"
+                            minDate: "today",
+                            disableMobile: true
                         }}
                         render={({ defaultValue, value, ...props }, ref) => {
                             return (
