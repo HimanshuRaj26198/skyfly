@@ -8,6 +8,8 @@ const Navbar = () => {
     const path = usePathname();
     const [country, setCountry] = useState(null);
     const [error, setError] = useState(null);
+    const [flagUrl, setFlagUrl] = useState("/assets/img/flag/united-states.png");
+    const [currency, setCurrency] = useState("USD");
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -16,9 +18,10 @@ const Navbar = () => {
                     const { latitude, longitude } = position.coords;
                     const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
                     const data = await response.json();
-                    console.log(data.countryName, "COuntry");
-                    console.log(Country[data.countryName], "Obj")
                     setCountry(data.countryName);
+                    setFlagUrl(Country[data.countryName].flag);
+                    setCurrency(Country[data.countryName].currency);
+
                 },
                 (error) => setError(error.message)
             );
@@ -40,11 +43,11 @@ const Navbar = () => {
                         <ul>
                             <li className="currencyDropdown me-2">
                                 <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#currencyModal"><span
-                                    className="fw-medium">{Country[country]?.currency}</span></a>
+                                    className="fw-medium">{currency}</span></a>
                             </li>
                             <li className="languageDropdown me-2">
                                 <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#countryModal">
-                                    <img src={`${Country[country]?.flag}`} className="img-fluid" width="17" alt="Country" /></a>
+                                    <img src={flagUrl} className="img-fluid" width="17" alt="Country" /></a>
                             </li>
                             <li>
                                 <a href="#" className="bg-light-primary text-primary rounded" data-bs-toggle="modal"
@@ -256,11 +259,11 @@ const Navbar = () => {
                     <ul className="nav-menu nav-menu-social align-to-right">
                         <li className="currencyDropdown me-2">
                             <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#currencyModal"><span
-                                className="fw-medium">{Country[country]?.currency}</span></a>
+                                className="fw-medium">{currency}</span></a>
                         </li>
                         <li className="languageDropdown me-2">
                             <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#countryModal">
-                                <img src={`${Country[country]?.flag}`} className="img-fluid" width="17" alt="Country" /></a>
+                                <img src={flagUrl} className="img-fluid" width="17" alt="Country" /></a>
                         </li>
                         <li className="list-buttons">
                             <a href="#" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login"><i
