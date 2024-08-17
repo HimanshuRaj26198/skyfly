@@ -126,22 +126,42 @@ const FlightSearch = () => {
                             dateFormat: 'Y-m-d',
                             minDate: "today"
                         }}
-                        placeholder="Departure..."
+                        render={({ defaultValue, value, ...props }, ref) => {
+                            return (
+                                <input
+                                    {...props}
+                                    ref={ref}
+                                    className="form-control fw-bold choosedate"// Add your custom styles
+                                    placeholder="Departure.."
+                                    type="text"
+                                />
+                            );
+                        }}
                     />
-                    {/* <input onChange={(e) => console.log(e.target.value)} className="form-control fw-bold choosedate" type="text" placeholder="Departure.." /> */}
+                    {/* <input className="form-control fw-bold choosedate" type="text" placeholder="Departure.." /> */}
                 </div>
             </div>
             {returnTrip && <div className="col-xl-12 col-lg-12 col-md-12">
                 <div className="form-group mb-0">
                     <Flatpickr
                         className="form-control fw-bold choosedate"
-                        value={returnD}
+                        value={departure}
                         onChange={handleReturnDateChange}
                         options={{
                             dateFormat: 'Y-m-d',
                             minDate: "today"
                         }}
-                        placeholder="Return..."
+                        render={({ defaultValue, value, ...props }, ref) => {
+                            return (
+                                <input
+                                    {...props}
+                                    ref={ref}
+                                    className="form-control fw-bold choosedate"// Add your custom styles
+                                    placeholder="Return..."
+                                    type="text"
+                                />
+                            );
+                        }}
                     />
                     {/* <input onChange={(e) => { console.log(e.target.value) }} className="form-control fw-bold choosedate" type="text" placeholder="Return.." /> */}
                 </div>
