@@ -28,10 +28,12 @@ const ModifySearch = () => {
 
     // Update visibility based on window size
     useEffect(() => {
-        if (windowDimensions.width < 992) {
-            setModifySearchVisible(false);
-        } else {
-            setModifySearchVisible(true);
+        if (window) {
+            if (windowDimensions.width < 992) {
+                setModifySearchVisible(false);
+            } else {
+                setModifySearchVisible(true);
+            }
         }
     }, [windowDimensions]);
 
