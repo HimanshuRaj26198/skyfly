@@ -52,7 +52,10 @@ const FlightSearch = () => {
             toast.error("Please add destination airport.")
         } else if (!departure) {
             toast.error("Please add departure date.")
-        } else {
+        } else if (returnTrip && !returnD) {
+            toast.error("Please add return date.")
+        }
+        else {
             router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}`)
         }
     }
