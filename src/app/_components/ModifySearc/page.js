@@ -3,8 +3,11 @@
 import { useState, useEffect } from "react";
 
 function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return { width, height };
+    if (typeof window !== "undefined") { // Check if window is defined
+        const { innerWidth: width, innerHeight: height } = window;
+        return { width, height };
+    }
+    return { width: 0, height: 0 };
 }
 
 const ModifySearch = () => {
