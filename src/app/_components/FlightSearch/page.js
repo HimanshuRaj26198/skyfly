@@ -59,6 +59,7 @@ const FlightSearch = () => {
         }
         else {
             let token = localStorage.getItem("typCknhbg");
+            console.log(country);
             router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${country.currency}`)
         }
     }
