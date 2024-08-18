@@ -1,11 +1,12 @@
 "use client"
 import Airports from "../../../../lib/airports.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Select from 'react-select';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { useRouter } from "next/navigation";
-import { toast, useEffect } from "react-toastify";
+import { toast } from "react-toastify";
+
 
 const FlightSearch = () => {
     const router = useRouter();
@@ -15,6 +16,7 @@ const FlightSearch = () => {
     const [origin, setOrigin] = useState("");
     const [destination, setDestination] = useState("");
     const [adultCount, setAdultCount] = useState(0);
+    const [country, setCountry] = useState({});
     let airportList = Object.values(Airports).map(a => {
         return { value: a.iata, label: `${a.city}, ${a.iata}` }
     });
@@ -45,7 +47,7 @@ const FlightSearch = () => {
     };
 
 
-    const handleSearchFlights = () => {
+    const handleSearchFlights = async () => {
         if (!origin.value) {
             toast.error("Please add origin airport.")
         } else if (!destination.value) {
@@ -56,7 +58,8 @@ const FlightSearch = () => {
             toast.error("Please add return date.")
         }
         else {
-            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}`)
+            let token = localStorage.getItem("typCknhbg");
+            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${country.currency}`)
         }
     }
     const handleDepartureChange = (selectedDates) => {
@@ -74,6 +77,30 @@ const FlightSearch = () => {
     const handleDestinationChange = (selected) => {
         setDestination(selected);
     }
+
+    const fetchToken = async () => {
+        let body = new URLSearchParams();
+        body.append("grant_type", "client_credentials");
+        body.append("client_id", "ASnlGo1J2j0yZOqmXmctS0sidtQ70vuR");
+        body.append("client_secret", "dJz4MtaWjbPoTpKC");
+        try {
+            const data = await fetch("https://test.api.amadeus.com/v1/security/oauth2/token",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: body.toString()
+                });
+            const json = await data.json();
+            localStorage.setItem("typCknhbg", json.access_token);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        setCountry(JSON.parse(localStorage.getItem("country")));
+        fetchToken();
+    }, [])
 
     return <div className="tab-pane show active" id="flights">
         <div className="row gx-lg-2 g-3">

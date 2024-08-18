@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import Country from "../../../../lib/countryFlag.json";
 import Link from "next/link";
 
+
+
 const Navbar = () => {
     const path = usePathname();
-    const [country, setCountry] = useState(null);
+    const [country, setCountry] = useState("United States of America (the)");
     const [error, setError] = useState(null);
     const [flagUrl, setFlagUrl] = useState("/assets/img/flag/united-states.png");
     const [currency, setCurrency] = useState("USD");
@@ -21,9 +23,10 @@ const Navbar = () => {
                     setCountry(data.countryName);
                     setFlagUrl(Country[data.countryName].flag);
                     setCurrency(Country[data.countryName].currency);
+                    localStorage.setItem("country", JSON.stringify(Country[data.countryName]));
 
                 },
-                (error) => setError(error.message)
+                (error) => localStorage.setItem("country", JSON.stringify(Country[country]))
             );
         } else {
             setError('Geolocation is not supported by this browser.');
