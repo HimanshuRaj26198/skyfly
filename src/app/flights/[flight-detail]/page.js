@@ -15,6 +15,12 @@ const FlightDetail = () => {
     const emailRef = useRef("");
     const mobNo = useRef("");
     const [country, setCountry] = useState(null);
+    const [filledNum, setFilledNum] = useState(false);
+    const contactName = useRef("");
+    const contactLastname = useRef("");
+    const contactNum = useRef("+1");
+    const contactEmail = useRef("");
+
 
     const handleSelectGender = (gender) => {
         setGender(gender);
@@ -135,9 +141,43 @@ const FlightDetail = () => {
         setTravellers(prevArray => removeElementByIndex([...prevArray], index));
     }
 
+    const handleContactFormSubmit = (e) => {
+        e.preventDefault();
+        let contactFormData = new FormData();
+        console.log(contactName.current.value, "Name Ref");
+        console.log(contactLastname.current.value, "Name Ref")
+        console.log(contactEmail.current.value, "Name Ref")
+        console.log(contactNum.current.value, "Name Ref")
+        contactFormData.append("FirstName", contactName.current.value);
+        contactFormData.append("LastName", contactLastname.current.value);
+        contactFormData.append("Email", contactEmail.current.value);
+        contactFormData.append("Mobile", contactNum.current.value);
+        console.log(contactFormData, "Form");
+        console.log(contactFormData.get("FirstName"), "FormData");
+        fetch("https://script.google.com/macros/s/AKfycbwVmb-Fq-ph0V-Buszfxf-iww-DuyO7M7s7APz-3-yNsDeXO3XWQCG3-djqs9kJ1X1CdA/exec",
+            {
+                method: "POST",
+                body: contactFormData
+            }
+        ).then(res => console.log(res)).catch(err => console.log(err));
+    }
+
     useEffect(() => {
         setFlight(JSON.parse(localStorage.getItem("selectedFlight")));
         setCountry(JSON.parse(localStorage.getItem("country")));
+        // if (document) {
+        //     let script = document.createElement("script");
+        //     script.type = "text/javascript";
+        //     script.innerHTML = `
+        //         const scriptURL = 'https://script.google.com/macros/s/AKfycbwVmb-Fq-ph0V-Buszfxf-iww-DuyO7M7s7APz-3-yNsDeXO3XWQCG3-djqs9kJ1X1CdA/exec'
+        //         const form = document.forms['google-sheet']
+        //         form.addEventListener('submit', e => {
+        //           e.preventDefault()
+        //           fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        //             .then(response => window.open('/error.html', '_self'))
+        //         })
+        //     `
+        // }
     }, [])
     return <>
         <section className="pt-3 gray-simple">
@@ -364,7 +404,7 @@ const FlightDetail = () => {
                                                 </div>
                                             })}
 
-                                            <div className="full-width d-flex flex-column mb-4 position-relative">
+                                            {filledNum && <div className="full-width d-flex flex-column mb-4 position-relative">
 
                                                 <div className="row align-items-stat">
                                                     <div className="col-xl-12 col-lg-12 col-md-12 mb-2">
@@ -464,7 +504,7 @@ const FlightDetail = () => {
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            </div>}
 
                                             <div className="full-width d-flex flex-column mb-2 position-relative">
 
@@ -472,24 +512,39 @@ const FlightDetail = () => {
                                                     <div className="col-xl-12 col-lg-12 col-md-12 mb-2">
                                                         <h5>Personal Information</h5>
                                                     </div>
-
-                                                    <div className="col-xl-6 col-lg-6 col-md-6">
-                                                        <div className="form-group">
-                                                            <label className="form-label">Email Address</label>
-                                                            <input ref={emailRef} type="text" className="form-control" placeholder="Email Here" />
+                                                    <form onSubmit={handleContactFormSubmit} method="post" >
+                                                        <div className="col-xl-6 col-lg-6 col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="form-label">First Name</label>
+                                                                <input ref={contactName} type="text" className="form-control" placeholder="First Name" />
+                                                            </div>
                                                         </div>
-                                                    </div>
-
-                                                    <div className="col-xl-6 col-lg-6 col-md-6">
-                                                        <div className="form-group">
-                                                            <label className="form-label">Mobile number</label>
-                                                            <input ref={mobNo} type="text" className="form-control" placeholder="Contact Number" />
+                                                        <div className="col-xl-6 col-lg-6 col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="form-label">Last Name</label>
+                                                                <input ref={contactLastname} type="text" className="form-control" placeholder="Last Name" />
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div className="col-xl-12 col-lg-12 col-md-12">
-                                                        <button className="btn btn-md full-width px-5 btn-primary fw-medium" type="button">Submit & Proceed for Payment</button>
-                                                    </div>
+                                                        <div className="col-xl-6 col-lg-6 col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="form-label">Email Address</label>
+                                                                <input ref={contactEmail} type="text" className="form-control" placeholder="Email Here" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-xl-6 col-lg-6 col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="form-label">Mobile number</label>
+                                                                <input ref={contactNum} type="tel" className="form-control" placeholder="Contact Number" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="col-xl-12 col-lg-12 col-md-12">
+                                                            <button name="submit" className="btn btn-md full-width px-5 btn-primary fw-medium" type="submit">Proceed to add passenger</button>
+                                                        </div>
+                                                    </form>
+
 
                                                 </div>
                                             </div>
