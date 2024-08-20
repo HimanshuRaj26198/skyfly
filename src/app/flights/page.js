@@ -8,6 +8,7 @@ import { SampleRespone } from "../_components/response";
 
 const fetchFlightList = async (searchParams) => {
     let currency = searchParams.curr || "USD";
+    console.log(currency, "currency")
     let query = {
         "currencyCode": currency,
         "originDestinations": [
@@ -54,7 +55,6 @@ const fetchFlightList = async (searchParams) => {
             body: JSON.stringify(query)
         });
 
-        console.log(response, "Response");
         const json = await response.json();
         // console.log(json, "JSON");
         // console.log(sampleResponse, "Sample Response");

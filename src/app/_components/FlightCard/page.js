@@ -160,7 +160,7 @@ const FlightCard = ({ flight, trip }) => {
                                 </div>
 
                                 <div onClick={getFlightDetail} className="flight-button-wrap">
-                                    <button style={{ zIndex: "999" }} className="btn btn-primary btn-md fw-medium full-width">
+                                    <button className="btn btn-primary btn-md fw-medium full-width">
                                         Select Flight<i className="fa-solid fa-arrow-trend-up ms-2"></i>
                                     </button>
                                 </div>

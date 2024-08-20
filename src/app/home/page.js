@@ -11,9 +11,9 @@ const HomePage = () => {
                     <div className="col-cl-5 col-lg-6 col-md-12">
                         <div className="position-relative">
                             <h1>We Give  Wings To Your Destination</h1>
-                            <p className="fs-5 fw-light mb-0">Take a little break from the work strss of everyday. Discover plan trip and explore beautiful destinations.</p>
-                            <div className="d-flex align-items-start justify-content-start gap-3 flex-wrap mt-xl-5 mt-4">
-                                <div className="bannrButton">
+                            <p className="fs-5 fw-light mb-0 top_desktop_text">Take a little break from the work strss of everyday. Discover plan trip and explore beautiful destinations.</p>
+                            <div className="d-flex align-items-start justify-content-start gap-3 flex-wrap mt-xl-5 mt-4 top_desktop_text">
+                                <div className="bannrButton top_desktop_text">
                                     <button type="button" className="btn btn-whites fw-medium px-4 rounded-pill">Discover Place</button>
                                 </div>
                                 <div className="bannrHelp">

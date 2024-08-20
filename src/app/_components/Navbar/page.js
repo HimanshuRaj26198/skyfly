@@ -268,9 +268,15 @@ const Navbar = () => {
                             <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#countryModal">
                                 <img src={flagUrl} className="img-fluid" width="17" alt="Country" /></a>
                         </li>
-                        <li className="list-buttons">
+                        <li style={{ marginRight: "5px" }} className="list-buttons">
                             <a href="#" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login"><i
                                 className="fa-regular fa-circle-user fs-6 me-2"></i>Sign In / Register</a>
+                        </li>
+                        <li className="list-buttons">
+                            <a style={{ display: "flex", flexDirection: "column", fontSize: "18px" }} href="trl:+1 (888) 267-5955" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login">
+                                <span style={{ fontSize: "8px" }} >Call 24/7 for our best deals</span>
+                                +1 (888) 267-5955
+                            </a>
                         </li>
                     </ul>
                 </div>
