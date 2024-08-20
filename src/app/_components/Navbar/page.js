@@ -63,6 +63,22 @@ const Navbar = () => {
             document.head.appendChild(inlineScript);
             // document.head.appendChild(conversionScript);
 
+            //talk to
+            let tawktoScript = document.createElement("script");
+            tawktoScript.type = "text/javascript";
+            tawktoScript.innerHTML = `(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/66bce0ce146b7af4a43a7218/1i58ssag4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+            `
+
+            document.head.appendChild(tawktoScript);
+            //end tawkTo
+
             return () => {
                 document.head.removeChild(gtag);
                 document.head.removeChild(inlineScript);

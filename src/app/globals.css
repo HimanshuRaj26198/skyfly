@@ -105,13 +105,11 @@
 .info_container {
     display: flex;
     background-color: rgba(255, 255, 255, 0.7);
-    width: 98%;
+    width: 100%;
     padding: 5px 0;
     justify-content: center;
     gap: 15px;
     align-items: center;
-
-
 }
 
 .call_icon {
@@ -119,7 +117,7 @@
     justify-content: center;
     align-items: center;
     background-color: rgb(58, 181, 74);
-    font-size: 32px;
+    font-size: 28px;
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -150,7 +148,7 @@
 
 .number_container h2 a {
     font-weight: 800;
-    font-size: 19px;
+    font-size: 15px;
 }
 
 @keyframes swing {
