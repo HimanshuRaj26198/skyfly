@@ -5,7 +5,7 @@ const FlightCardPrice = ({ price }) => {
     useEffect(() => {
         setCountry(JSON.parse(localStorage.getItem("country")))
     }, [])
-    return <div class="text-dark fs-3 fw-bold lh-base">{country.currency}{country.currencySymbol}{price}</div>
+    return <div className="text-dark fs-3 fw-bold lh-base">{country.currency}{country.currencySymbol}{price}</div>
 }
 
 export default FlightCardPrice;

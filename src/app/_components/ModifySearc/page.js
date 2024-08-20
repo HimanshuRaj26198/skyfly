@@ -44,7 +44,7 @@ const ModifySearch = () => {
         <>
             <div className="container search-filter-opener">
                 <div onClick={() => showModifySearch()} className="modify-search-action-container">
-                    <span> Modify Search </span> {modifySearchVisible ? <i className="fa-solid fa-angle-down"></i> : <i class="fa-solid fa-angle-up"></i>}
+                    <span> Modify Search </span> {modifySearchVisible ? <i className="fa-solid fa-angle-down"></i> : <i className="fa-solid fa-angle-up"></i>}
                 </div>
             </div>
             {modifySearchVisible && (

@@ -87,8 +87,8 @@ const FlightCard = ({ flight, trip }) => {
                             <div className="col-xl-12 col-lg-12 col-md-12 flight-card-custom">
                                 <div style={{ display: "flex", flexDirection: "column", width: "100%", gap: "10px" }} >
                                     {
-                                        flight.itineraries[0].segments.map(a => {
-                                            return <div className="row gx-lg-5 gx-3 gy-4 align-items-center">
+                                        flight.itineraries[0].segments.map((a, i) => {
+                                            return <div key={i} className="row gx-lg-5 gx-3 gy-4 align-items-center">
                                                 <div className="col-sm-auto">
                                                     <div className="d-flex align-items-center justify-content-start">
                                                         <div className="d-start fl-pic">

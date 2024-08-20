@@ -19,7 +19,7 @@ const FlightSearch = () => {
     const [adultCount, setAdultCount] = useState(0);
     const [country, setCountry] = useState({});
     const [loading, setLoading] = useState(false);
-    const [bookingClass, setBookingClass] = useState("ECONOMY");
+    const [bookingClass, setBookingClass] = useState({ label: "ECONOMY", value: "ECONOMY" });
     const classList = [
         { label: "ECONOMY", value: "ECONOMY" },
         { label: "FIRST CLASS", value: "FIRST" },
@@ -70,7 +70,7 @@ const FlightSearch = () => {
             setLoading(true);
             let token = localStorage.getItem("typCknhbg");
             let curr = JSON.parse(localStorage.getItem("country")).currency || "USD";
-            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${curr}&class=${bookingClass}`)
+            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${curr}&class=${bookingClass.value}`)
         }
     }
     const handleDepartureChange = (selectedDates) => {
@@ -218,7 +218,8 @@ const FlightSearch = () => {
                             options={classList}
                             placeholder="Travel Class"
                             styles={customStyles}
-                            onChange={(selected) => { setBookingClass(selected.value) }}
+                            onChange={(selected) => { setBookingClass(selected) }}
+                            value={bookingClass}
                         />
                     </div>
                 </div>
