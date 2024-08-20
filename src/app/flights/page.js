@@ -117,7 +117,7 @@ const FlightListPage = async ({ searchParams }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flsx-first mt-sm-0 mt-2">
+                                    {/* <div class="flsx-first mt-sm-0 mt-2">
                                         <ul class="nav nav-pills nav-fill p-1 small lights blukker bg-primary rounded-3 shadow-sm"
                                             id="filtersblocks" role="tablist">
                                             <li class="nav-item" role="presentation">
@@ -133,7 +133,7 @@ const FlightListPage = async ({ searchParams }) => {
                                                     aria-selected="false">Lowest Price</button>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
