@@ -11,7 +11,7 @@ const OfferCard = () => {
                     </p>
                 </div>
             </div>
-            <div class="flx-last text-md-end mt-md-0 mt-4"><a type="button" href="tel:+1-(888) 267-5955" class="btn btn-whites fw-medium full-width text-dark px-xl-4"> +1-(888) 267-5955</a></div>
+            <div class="flx-last text-md-end mt-md-0 mt-4"><a type="button" href="tel:+1-(888) 267-5955" class="btn btn-whites fw-medium full-width text-dark px-xl-4"> <bold>+1-(888) 267-5955</bold></a></div>
         </div>
     </div>
 }

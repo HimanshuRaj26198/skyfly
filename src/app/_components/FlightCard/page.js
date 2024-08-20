@@ -96,7 +96,7 @@ const FlightCard = ({ flight, trip }) => {
                                                         </div>
                                                         <div className="d-end fl-title ps-2">
                                                             <div className="text-dark fw-medium">{a.airline.name}</div>
-                                                            <div className="text-sm text-muted">${flight.itineraries[0].segments[0].cabin}Class</div>
+                                                            <div className="text-sm text-muted">{flight.itineraries[0].segments[0].cabin}Class</div>
                                                         </div>
                                                     </div>
                                                 </div>
