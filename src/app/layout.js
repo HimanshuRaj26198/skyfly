@@ -72,7 +72,7 @@ export default function RootLayout({ children }) {
             </div>
             <div className="number_container" >
               <p>Save time and get our best deals.</p>
-              <h2><a href="tel:+19725856351" >+1 (972) 585-6351</a></h2>
+              <h2><a href="tel:+19725856351" >+1 (888) 267-5955</a></h2>
             </div>
           </div>
         </div>
