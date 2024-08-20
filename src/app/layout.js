@@ -36,6 +36,11 @@ export default function RootLayout({ children }) {
         <link href="/assets/css/style.css" rel="stylesheet" />
       </head>
       <body className={inter.className}>
+        {/* <div className="top_contact_bar" >
+          <div className="contact_info" >
+            <p>24*7 support : <a href="tel:+1-(888) 267-5955" >+1-(888) 267-5955</a></p>
+          </div>
+        </div> */}
         <div id="main-wrapper" >
           <Navbar />
           <ToastContainer />

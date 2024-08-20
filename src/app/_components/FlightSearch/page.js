@@ -6,6 +6,7 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Preloader from "../Preloader/page";
 
 
 const FlightSearch = () => {
@@ -17,6 +18,14 @@ const FlightSearch = () => {
     const [destination, setDestination] = useState("");
     const [adultCount, setAdultCount] = useState(0);
     const [country, setCountry] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [bookingClass, setBookingClass] = useState("ECONOMY");
+    const classList = [
+        { label: "ECONOMY", value: "ECONOMY" },
+        { label: "FIRST CLASS", value: "FIRST" },
+        { label: "BUSINESS", value: "BUSINESS" },
+        { label: "PREMIUM ECONOMY", value: "PREMIUM_ECONOMY" }
+    ]
     let airportList = Object.values(Airports).map(a => {
         return { value: a.iata, label: `${a.city}, ${a.iata}` }
     });
@@ -58,9 +67,10 @@ const FlightSearch = () => {
             toast.error("Please add return date.")
         }
         else {
+            setLoading(true);
             let token = localStorage.getItem("typCknhbg");
-            console.log(country);
-            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${country.currency}`)
+            let curr = JSON.parse(localStorage.getItem("country")).currency || "USD";
+            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${curr}&class=${bookingClass}`)
         }
     }
     const handleDepartureChange = (selectedDates) => {
@@ -82,10 +92,10 @@ const FlightSearch = () => {
     const fetchToken = async () => {
         let body = new URLSearchParams();
         body.append("grant_type", "client_credentials");
-        body.append("client_id", "ASnlGo1J2j0yZOqmXmctS0sidtQ70vuR");
-        body.append("client_secret", "dJz4MtaWjbPoTpKC");
+        body.append("client_id", "0fTkgg7u7lrqduKUEFx7v5Gnhey4ZG50");
+        body.append("client_secret", "1kbdDxkhO4kMMH9p");
         try {
-            const data = await fetch("https://test.api.amadeus.com/v1/security/oauth2/token",
+            const data = await fetch("https://api.amadeus.com/v1/security/oauth2/token",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -103,126 +113,124 @@ const FlightSearch = () => {
         fetchToken();
     }, [])
 
-    return <div className="tab-pane show active" id="flights">
-        <div className="row gx-lg-2 g-3">
-            <div className="col-xl-12 col-lg-12 col-md-12">
-                <div className="flx-start mb-sm-0 mb-2">
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" onClick={() => setReturnTrip(true)} type="radio" name="trip" id="return" value="option1" checked={returnTrip} />
-                        <label className="form-check-label" for="return">Return</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" onClick={() => setReturnTrip(false)} checked={!returnTrip} type="radio" name="trip" id="oneway" value="option2" />
-                        <label className="form-check-label" for="oneway">One Way</label>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xl-12 col-lg-12 col-md-12">
-                <div className="row gy-3 gx-lg-2 gx-3">
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 position-relative">
-                        <div className="form-group hdd-arrow mb-0">
-                            <Select
-                                className="leaving form-control fw-bold"
-                                options={airportList}
-                                placeholder="Leaving..."
-                                styles={customStyles}
-                                onChange={handleOriginChange}
-                            />
+    return <>
+        {loading && <div className="dark_container" > <Preloader /> </div>}
+        <div className="tab-pane show active" id="flights">
+            <div className="row gx-lg-2 g-3">
+                <div className="col-xl-12 col-lg-12 col-md-12">
+                    <div className="flx-start mb-sm-0 mb-2">
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input" onClick={() => setReturnTrip(true)} type="radio" name="trip" id="return" value="option1" checked={returnTrip} />
+                            <label className="form-check-label" for="return">Return</label>
                         </div>
-                        <div className="btn-flip-icon mt-md-0">
-                            <button className="p-0 m-0 text-primary"><i className="fa-solid fa-right-left"></i></button>
-                        </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                        <div className="form-groupp hdd-arrow mb-0">
-                            <Select
-                                className="leaving form-control fw-bold"
-                                options={airportList}
-                                placeholder="Going To"
-                                styles={customStyles}
-                                onChange={handleDestinationChange}
-                            />
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input" onClick={() => setReturnTrip(false)} checked={!returnTrip} type="radio" name="trip" id="oneway" value="option2" />
+                            <label className="form-check-label" for="oneway">One Way</label>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="col-xl-12 col-lg-12 col-md-12">
-                <div className="form-group mb-0">
-                    <Flatpickr
-                        className="form-control fw-bold choosedate"
-                        value={departure}
-                        onChange={handleDepartureChange}
-                        options={{
-                            dateFormat: 'Y-m-d',
-                            minDate: "today",
-                            disableMobile: true
-                        }}
-                        render={({ defaultValue, value, ...props }, ref) => {
-                            return (
-                                <input
-                                    {...props}
-                                    ref={ref}
-                                    className="form-control fw-bold choosedate"// Add your custom styles
-                                    placeholder="Departure.."
-                                    type="text"
+                <div className="col-xl-12 col-lg-12 col-md-12">
+                    <div className="row gy-3 gx-lg-2 gx-3">
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 position-relative">
+                            <div className="form-group hdd-arrow mb-0">
+                                <Select
+                                    className="leaving form-control fw-bold"
+                                    options={airportList}
+                                    placeholder="Leaving..."
+                                    styles={customStyles}
+                                    onChange={handleOriginChange}
                                 />
-                            );
-                        }}
-                    />
-                    {/* <input className="form-control fw-bold choosedate" type="text" placeholder="Departure.." /> */}
-                </div>
-            </div>
-            {returnTrip && <div className="col-xl-12 col-lg-12 col-md-12">
-                <div className="form-group mb-0">
-                    <Flatpickr
-                        className="form-control fw-bold choosedate"
-                        value={returnD}
-                        onChange={handleReturnDateChange}
-                        options={{
-                            dateFormat: 'Y-m-d',
-                            minDate: "today",
-                            disableMobile: true
-                        }}
-                        render={({ defaultValue, value, ...props }, ref) => {
-                            return (
-                                <input
-                                    {...props}
-                                    ref={ref}
-                                    className="form-control fw-bold choosedate"// Add your custom styles
-                                    placeholder="Return..."
-                                    type="text"
+                            </div>
+                            <div className="btn-flip-icon mt-md-0">
+                                <button className="p-0 m-0 text-primary"><i className="fa-solid fa-right-left"></i></button>
+                            </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                            <div className="form-groupp hdd-arrow mb-0">
+                                <Select
+                                    className="leaving form-control fw-bold"
+                                    options={airportList}
+                                    placeholder="Going To"
+                                    styles={customStyles}
+                                    onChange={handleDestinationChange}
                                 />
-                            );
-                        }}
-                    />
-                    {/* <input onChange={(e) => { console.log(e.target.value) }} className="form-control fw-bold choosedate" type="text" placeholder="Return.." /> */}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>}
-            <div className="col-xl-12 col-lg-12 col-md-12">
-                <div className="form-groupp hdd-arrow mb-0">
-                    <select onChange={(e) => { setAdultCount(e.target.value) }} className="occupant form-control fw-bold">
-                        <option value="">Select</option>
-                        <option value="1">01 Adult</option>
-                        <option value="2">02 Adult</option>
-                        <option value="3">03 Adult</option>
-                        <option value="4">04 Adult</option>
-                        <option value="5">05 Adult</option>
-                        <option value="6">06 Adult</option>
-                        <option value="7">07 Adult</option>
-                        <option value="8"> 08 Adult</option>
-                    </select>
-                </div>
-            </div>
 
-            <div className="col-xl-12 col-lg-12 col-md-12">
-                <div className="form-group mb-0">
-                    <button onClick={handleSearchFlights} type="button" className="btn btn-primary full-width fw-medium">Search Flights<i className="fa-solid fa-location-arrow ms-2"></i></button>
+                <div className="col-xl-12 col-lg-12 col-md-12">
+                    <div className="form-group mb-0">
+                        <Flatpickr
+                            className="form-control fw-bold choosedate"
+                            value={departure}
+                            onChange={handleDepartureChange}
+                            options={{
+                                dateFormat: 'Y-m-d',
+                                minDate: "today",
+                                disableMobile: true
+                            }}
+                            render={({ defaultValue, value, ...props }, ref) => {
+                                return (
+                                    <input
+                                        {...props}
+                                        ref={ref}
+                                        className="form-control fw-bold choosedate"// Add your custom styles
+                                        placeholder="Departure.."
+                                        type="text"
+                                    />
+                                );
+                            }}
+                        />
+                        {/* <input className="form-control fw-bold choosedate" type="text" placeholder="Departure.." /> */}
+                    </div>
                 </div>
-            </div>
+                {returnTrip && <div className="col-xl-12 col-lg-12 col-md-12">
+                    <div className="form-group mb-0">
+                        <Flatpickr
+                            className="form-control fw-bold choosedate"
+                            value={returnD}
+                            onChange={handleReturnDateChange}
+                            options={{
+                                dateFormat: 'Y-m-d',
+                                minDate: "today",
+                                disableMobile: true
+                            }}
+                            render={({ defaultValue, value, ...props }, ref) => {
+                                return (
+                                    <input
+                                        {...props}
+                                        ref={ref}
+                                        className="form-control fw-bold choosedate"// Add your custom styles
+                                        placeholder="Return..."
+                                        type="text"
+                                    />
+                                );
+                            }}
+                        />
+                        {/* <input onChange={(e) => { console.log(e.target.value) }} className="form-control fw-bold choosedate" type="text" placeholder="Return.." /> */}
+                    </div>
+                </div>}
+                <div className="col-xl-12 col-lg-12 col-md-12">
+                    <div className="form-groupp hdd-arrow mb-0">
+                        <Select
+                            className="occupant form-control fw-bold"
+                            options={classList}
+                            placeholder="Travel Class"
+                            styles={customStyles}
+                            onChange={(selected) => { setBookingClass(selected.value) }}
+                        />
+                    </div>
+                </div>
 
-        </div>
-    </div>
+                <div className="col-xl-12 col-lg-12 col-md-12">
+                    <div className="form-group mb-0">
+                        <button onClick={handleSearchFlights} type="button" className="btn btn-primary full-width fw-medium">Search Flights<i className="fa-solid fa-location-arrow ms-2"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div></>
 }
 
 export default FlightSearch;

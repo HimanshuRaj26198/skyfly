@@ -51,3 +51,10 @@
     align-items: center;
     gap: 20px;
 }
+
+.contact_info {
+    background-color: rgb(39, 169, 116);
+    display: flex;
+    justify-content: center;
+    color: white
+}

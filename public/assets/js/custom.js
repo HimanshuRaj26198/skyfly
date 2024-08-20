@@ -226,9 +226,9 @@
 		placeholder: "Going To"
 	});
 
-	$(".occupant").select2({
-		placeholder: "Occupant"
-	});
+	// $(".occupant").select2({
+	// 	placeholder: "Occupant"
+	// });
 
 	$(".pickup").select2({
 		placeholder: "Select Pickup Location"

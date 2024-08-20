@@ -1,6 +1,9 @@
+"use client"
+import Link from "next/link";
 import FlightCardPrice from "../FlightCardPrice/page";
-
-const FlightCard = async ({ flight }) => {
+import { useRouter } from "next/navigation";
+const FlightCard = ({ flight, trip }) => {
+    const router = useRouter();
     const getFormattedDate = (date) => {
         let newDate = new Date(date)
         if (!isNaN(newDate)) {
@@ -63,54 +66,59 @@ const FlightCard = async ({ flight }) => {
     }
     ;
 
-    return <div class="col-xl-12 col-lg12 col-md-12">
-        <div class="flights-accordion">
-            <div class="flights-list-item bg-white rounded-3 p-3">
-                <div class="row gy-4 align-items-center justify-content-between">
+    const getFlightDetail = () => {
+        let pathname = `/flights/${trip.source}-${trip.des}`;
+        localStorage.setItem("selectedFlight", JSON.stringify(flight));
+        router.push(pathname)
+    }
 
-                    <div class="col">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12">
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="label bg-light-primary text-primary me-2">Departure</span>
-                                    <span class="text-muted text-sm">{getFormattedDate(flight.itineraries[0].segments[0].departure.at)}</span>
+    return <div className="col-xl-12 col-lg12 col-md-12">
+        <div className="flights-accordion">
+            <div className="flights-list-item bg-white rounded-3 p-3">
+                <div className="row gy-4 align-items-center justify-content-between">
+                    <div className="col">
+                        <div className="row">
+                            <div className="col-xl-12 col-lg-12 col-md-12">
+                                <div className="d-flex align-items-center mb-2">
+                                    <span className="label bg-light-primary text-primary me-2">Departure</span>
+                                    <span className="text-muted text-sm">{getFormattedDate(flight.itineraries[0].segments[0].departure.at)}</span>
                                 </div>
                             </div>
-                            <div class="col-xl-12 col-lg-12 col-md-12 flight-card-custom">
+                            <div className="col-xl-12 col-lg-12 col-md-12 flight-card-custom">
                                 <div style={{ display: "flex", flexDirection: "column", width: "100%", gap: "10px" }} >
                                     {
                                         flight.itineraries[0].segments.map(a => {
-                                            return <div class="row gx-lg-5 gx-3 gy-4 align-items-center">
-                                                <div class="col-sm-auto">
-                                                    <div class="d-flex align-items-center justify-content-start">
-                                                        <div class="d-start fl-pic">
-                                                            <img class="img-fluid" src={a.airline.logo} width="45" alt="image" />
+                                            return <div className="row gx-lg-5 gx-3 gy-4 align-items-center">
+                                                <div className="col-sm-auto">
+                                                    <div className="d-flex align-items-center justify-content-start">
+                                                        <div className="d-start fl-pic">
+                                                            <img className="img-fluid" src={a.airline.logo} width="45" alt="image" />
                                                         </div>
-                                                        <div class="d-end fl-title ps-2">
-                                                            <div class="text-dark fw-medium">{a.airline.name}</div>
-                                                            <div class="text-sm text-muted">First Class</div>
+                                                        <div className="d-end fl-title ps-2">
+                                                            <div className="text-dark fw-medium">{a.airline.name}</div>
+                                                            <div className="text-sm text-muted">First Class</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="col">
-                                                    <div class="row gx-3 align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="text-dark fw-bold">{getTimeFromDate(a.departure.at)}</div>
-                                                            <div class="text-muted text-sm fw-medium">{a.departure.iataCode}</div>
+                                                <div className="col">
+                                                    <div className="row gx-3 align-items-center">
+                                                        <div className="col-auto">
+                                                            <div className="text-dark fw-bold">{getTimeFromDate(a.departure.at)}</div>
+                                                            <div className="text-muted text-sm fw-medium">{a.departure.iataCode}</div>
                                                         </div>
 
-                                                        <div class="col text-center">
-                                                            <div class="flightLine departure">
+                                                        <div className="col text-center">
+                                                            <div className="flightLine departure">
                                                                 <div></div>
                                                                 <div></div>
                                                             </div>
-                                                            {flight.itineraries[0].segments.length === 1 && <div class="text-muted text-sm fw-medium mt-3">Direct</div>}
+                                                            {flight.itineraries[0].segments.length === 1 && <div className="text-muted text-sm fw-medium mt-3">Direct</div>}
                                                         </div>
 
-                                                        <div class="col-auto">
-                                                            <div class="text-dark fw-bold">{getTimeFromDate(a.arrival.at)}</div>
-                                                            <div class="text-muted text-sm fw-medium">{a.arrival.iataCode}</div>
+                                                        <div className="col-auto">
+                                                            <div className="text-dark fw-bold">{getTimeFromDate(a.arrival.at)}</div>
+                                                            <div className="text-muted text-sm fw-medium">{a.arrival.iataCode}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -120,41 +128,40 @@ const FlightCard = async ({ flight }) => {
                                         })
                                     }
                                 </div>
-                                <div class="col-md-auto">
-                                    <div class="text-dark fw-medium">{extractDuration(flight.itineraries[0].duration)}</div>
-                                    <div class="text-muted text-sm fw-medium">{flight.itineraries[0].segments.length === 1 ? "Non" : flight.itineraries[0].segments.length - 1} Stop</div>
+                                <div className="col-md-auto">
+                                    <div className="text-dark fw-medium">{extractDuration(flight.itineraries[0].duration)}</div>
+                                    <div className="text-muted text-sm fw-medium">{flight.itineraries[0].segments.length === 1 ? "Non" : flight.itineraries[0].segments.length - 1} Stop</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-auto">
-                        <div class="d-flex items-center h-100">
-                            <div class="d-lg-block d-none border br-dashed me-4"></div>
+                    <div className="col-md-auto">
+                        <div className="d-flex items-center h-100">
+                            <div className="d-lg-block d-none border br-dashed me-4"></div>
                             <div>
-                                <div class="d-flex align-items-center justify-content-md-end mb-3">
-                                    <span class="square--20 rounded text-xs text-muted border me-2" data-bs-toggle="tooltip"
+                                <div className="d-flex align-items-center justify-content-md-end mb-3">
+                                    <span className="square--20 rounded text-xs text-muted border me-2" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="Free WiFi"><i
-                                            class="fa-solid fa-wifi"></i></span>
-                                    <span class="square--20 rounded text-xs text-muted border me-2" data-bs-toggle="tooltip"
+                                            className="fa-solid fa-wifi"></i></span>
+                                    <span className="square--20 rounded text-xs text-muted border me-2" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="Food Available"><i
-                                            class="fa-solid fa-utensils"></i></span>
-                                    <span class="square--20 rounded text-xs text-muted border me-2" data-bs-toggle="tooltip"
+                                            className="fa-solid fa-utensils"></i></span>
+                                    <span className="square--20 rounded text-xs text-muted border me-2" data-bs-toggle="tooltip"
                                         data-bs-placement="top" data-bs-title="One Cup Tea"><i
-                                            class="fa-solid fa-mug-saucer"></i></span>
-                                    <span class="square--20 rounded text-xs text-muted border" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" data-bs-title="Pet Allow"><i class="fa-solid fa-dog"></i></span>
+                                            className="fa-solid fa-mug-saucer"></i></span>
+                                    <span className="square--20 rounded text-xs text-muted border" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" data-bs-title="Pet Allow"><i className="fa-solid fa-dog"></i></span>
                                 </div>
-                                <div class="text-start text-md-end">
-                                    <span class="label bg-light-success text-success me-1">15% Off</span>
+                                <div className="text-start text-md-end">
+                                    <span className="label bg-light-success text-success me-1">15% Off</span>
                                     <FlightCardPrice price={flight.price.total} />
-                                    <div class="text-muted text-sm mb-2">Refundable</div>
+                                    <div className="text-muted text-sm mb-2">Refundable</div>
                                 </div>
 
-                                <div class="flight-button-wrap">
-                                    <button class="btn btn-primary btn-md fw-medium full-width" data-bs-toggle="modal"
-                                        data-bs-target="#bookflight">
-                                        Select Flight<i class="fa-solid fa-arrow-trend-up ms-2"></i>
+                                <div onClick={getFlightDetail} className="flight-button-wrap">
+                                    <button style={{ zIndex: "999" }} className="btn btn-primary btn-md fw-medium full-width">
+                                        Select Flight<i className="fa-solid fa-arrow-trend-up ms-2"></i>
                                     </button>
                                 </div>
                             </div>
