@@ -14,6 +14,25 @@ const Navbar = () => {
     const [currency, setCurrency] = useState("USD");
 
     useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+                    const data = await response.json();
+                    setCountry(data.countryName);
+                    setFlagUrl(Country[data.countryName].flag);
+                    setCurrency(Country[data.countryName].currency);
+                    localStorage.setItem("country", JSON.stringify(Country[data.countryName]));
+
+                },
+                (error) => localStorage.setItem("country", JSON.stringify(Country[country]))
+            );
+        } else {
+            setError('Geolocation is not supported by this browser.');
+        };
+
+
         if (document) {
             const gtag = document.createElement("script");
             gtag.src = "https://www.googletagmanager.com/gtag/js?id=AW-16665917801";
@@ -50,25 +69,6 @@ const Navbar = () => {
                 document.head.removeChild(conversionScript);
 
             };
-        }
-
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const { latitude, longitude } = position.coords;
-                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-                    const data = await response.json();
-                    setCountry(data.countryName);
-                    setFlagUrl(Country[data.countryName].flag);
-                    setCurrency(Country[data.countryName].currency);
-                    localStorage.setItem("country", JSON.stringify(Country[data.countryName]));
-
-                },
-                (error) => localStorage.setItem("country", JSON.stringify(Country[country]))
-            );
-        } else {
-            setError('Geolocation is not supported by this browser.');
         };
 
     }, []);

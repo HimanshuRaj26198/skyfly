@@ -68,7 +68,7 @@ export default function RootLayout({ children }) {
         <div className="main_info_ad" >
           <div className="info_container" >
             <div className="call_icon" >
-              <i class="fa-solid fa-phone-volume"></i>
+              <i className="fa-solid fa-phone-volume"></i>
             </div>
             <div className="number_container" >
               <p>Save time and get our best deals.</p>
