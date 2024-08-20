@@ -109,14 +109,14 @@ const FlightListPage = async ({ searchParams }) => {
                             </div>
                             <div class="col-xl-8 col-lg-8 col-md-12">
                                 <div class="d-flex align-items-center justify-content-start justify-content-lg-end flex-wrap">
-                                    <div class="flsx-first me-2">
+                                    {/* <div class="flsx-first me-2">
                                         <div class="bg-white rounded py-2 px-3">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox" role="switch" id="mapoption" />
                                                 <label class="form-check-label ms-1" for="mapoption">Map</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <div class="flsx-first mt-sm-0 mt-2">
                                         <ul class="nav nav-pills nav-fill p-1 small lights blukker bg-primary rounded-3 shadow-sm"
                                             id="filtersblocks" role="tablist">

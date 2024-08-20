@@ -14,6 +14,45 @@ const Navbar = () => {
     const [currency, setCurrency] = useState("USD");
 
     useEffect(() => {
+        if (document) {
+            const gtag = document.createElement("script");
+            gtag.src = "https://www.googletagmanager.com/gtag/js?id=AW-16665917801";
+
+            const inlineScript = document.createElement('script');
+            inlineScript.innerHTML = `
+             window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+    
+            gtag('config', 'AW-16665917801');`
+
+            const conversionScript = document.createElement("script");
+            conversionScript.innerHTML = `
+                function gtag_report_conversion(url) {
+                var callback = function () {
+                    if (typeof(url) != 'undefined') {
+                    window.location = url;
+                    }
+                };
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-16665917801/8Xz-CJaCy8oZEOny9oo-',
+                    'event_callback': callback
+                });
+                return false;
+            `
+            document.head.appendChild(gtag);
+            document.head.appendChild(inlineScript);
+            document.head.appendChild(conversionScript);
+
+            return () => {
+                document.head.removeChild(gtag);
+                document.head.removeChild(inlineScript);
+                document.head.removeChild(conversionScript);
+
+            };
+        }
+
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
