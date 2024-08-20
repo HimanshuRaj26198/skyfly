@@ -9,7 +9,7 @@ import { SampleRespone } from "../_components/response";
 const fetchFlightList = async (searchParams) => {
     let currency = searchParams.curr || "USD";
     let query = {
-        "currencyCode": "INR",
+        "currencyCode": currency,
         "originDestinations": [
             {
                 "id": "1",
