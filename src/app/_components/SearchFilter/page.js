@@ -9,7 +9,7 @@ function getWindowDimensions() {
     return { width: 0, height: 0 };
 }
 
-const SearchFilter = () => {
+const SearchFilter = ({ flightDataLength }) => {
     const [filterVisible, setFilterVisible] = useState(true);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -43,7 +43,7 @@ const SearchFilter = () => {
                 <div className="searchBar-headerBody d-flex align-items-start justify-content-between px-3 py-3">
                     <div className="searchBar-headerfirst">
                         <h6 className="fw-bold fs-5 m-0">Filters</h6>
-                        <p className="text-md text-muted m-0">Showing 180 Flights</p>
+                        <p className="text-md text-muted m-0">Showing {flightDataLength} Flights</p>
                     </div>
                     <div className="searchBar-headerlast text-end">
                         {filterVisible && <a href="#" className="text-md fw-medium text-primary active">Clear All</a>}

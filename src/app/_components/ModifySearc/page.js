@@ -1,6 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Airports from "../../../../lib/airports.json";
+import Select from 'react-select';
+import Flatpickr from 'react-flatpickr';
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
+
+
+
 
 function getWindowDimensions() {
     if (typeof window !== "undefined") { // Check if window is defined
@@ -10,9 +19,46 @@ function getWindowDimensions() {
     return { width: 0, height: 0 };
 }
 
-const ModifySearch = () => {
+const ModifySearch = ({ bookingClass, trip }) => {
+    const router = useRouter();
     const [modifySearchVisible, setModifySearchVisible] = useState(false);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [source, setSource] = useState("");
+    const [des, setDes] = useState("");
+    const [depDate, setDepDate] = useState("");
+    const [token, setToken] = useState(null);
+    const [country, setCountry] = useState({});
+
+    let airportList = Object.values(Airports).map(a => {
+        return { value: a.iata, label: `${a.city}, ${a.iata}` }
+    });
+
+
+    const handleOriginChange = (selected) => {
+        setSource(selected);
+    };
+
+    const handleDestinationChange = (selected) => {
+        setDes(selected);
+    }
+
+    const handleDepartureChange = (selectedDates) => {
+        const adjustedDate = new Date(selectedDates[0].getTime() - selectedDates[0].getTimezoneOffset() * 60000);
+        setDepDate(adjustedDate);
+    }
+
+    const handleModifySearchSubmit = () => {
+        if (!source) {
+            toast.error("Add a origin airport.")
+        } else if (!des) {
+            toast.error("Add a destination airport.")
+        } else if (!depDate) {
+            toast.error("Add a departure date.")
+        } else {
+            console.log(country, "Country")
+            router.push(`/flights?src=${source.value}&des=${des.value}&dep=${depDate.toISOString().substring(0, 10)}&tk=${token}&curr=${country.currency}&class=${bookingClass}`)
+        }
+    }
 
     const showModifySearch = () => {
         console.log("Function Triggering");
@@ -20,11 +66,67 @@ const ModifySearch = () => {
         setModifySearchVisible(prevState => !prevState);
     };
 
+    const fetchToken = async () => {
+        let body = new URLSearchParams();
+        body.append("grant_type", "client_credentials");
+        body.append("client_id", "0fTkgg7u7lrqduKUEFx7v5Gnhey4ZG50");
+        body.append("client_secret", "1kbdDxkhO4kMMH9p");
+        try {
+            const data = await fetch("https://api.amadeus.com/v1/security/oauth2/token",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: body.toString()
+                });
+            const json = await data.json();
+            localStorage.setItem("typCknhbg", json.access_token);
+            setToken(json.access_token);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            border: 'none', // Remove the border
+            boxShadow: 'none', // Remove box shadow
+            '&:hover': {
+                border: 'none', // Ensure no border on hover
+            },
+            height: '100%'
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: 'rgba(0, 0, 0, 0.3)', // Change placeholder color
+            fontSize: '14px', // Change placeholder font size
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: 'black', // Change selected value color
+        }),
+        menu: (provided) => ({
+            ...provided,
+            zIndex: 9999, // Ensure menu is above other elements
+        }),
+    };
+
     useEffect(() => {
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
+        setSource(airportList.find(a => { if (a.value === trip.src) return a }));
+        setDes(airportList.find(a => { if (a.value === trip.destination) return a }));
+        let tripDate = new Date(trip.departureDate);
+        setDepDate(tripDate);
+        setCountry(JSON.parse(Cookies.get('country')))
+        // setCountry(JSON.parse(localStorage.getItem("country")));
         window.addEventListener('resize', handleResize);
+        if (localStorage.getItem("token")) {
+            setToken(localStorage.getItem("token"))
+        } else {
+            fetchToken();
+        }
         handleResize(); // Call it initially to set the state correctly
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -59,33 +161,27 @@ const ModifySearch = () => {
                                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 position-relative">
                                                 <div className="form-group hdd-arrow mb-0">
                                                     <label className="text-light text-uppercase opacity-75">Leaving From</label>
-                                                    <select className="leaving form-control fw-bold">
-                                                        <option value="">Select</option>
-                                                        <option value="ny">New York</option>
-                                                        <option value="sd">San Diego</option>
-                                                        <option value="sj">San Jose</option>
-                                                        <option value="ph">Philadelphia</option>
-                                                        <option value="nl">Nashville</option>
-                                                        <option value="sf">San Francisco</option>
-                                                        <option value="hu">Houston</option>
-                                                        <option value="sa">San Antonio</option>
-                                                    </select>
+                                                    <Select
+                                                        className="leaving form-control fw-bold"
+                                                        options={airportList}
+                                                        placeholder="Leaving..."
+                                                        styles={customStyles}
+                                                        onChange={handleOriginChange}
+                                                        defaultValue={source}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                                 <div className="form-group hdd-arrow mb-0">
                                                     <label className="text-light text-uppercase opacity-75">Going To</label>
-                                                    <select className="goingto form-control fw-bold">
-                                                        <option value="">Select</option>
-                                                        <option value="ny">New York</option>
-                                                        <option value="sd">San Diego</option>
-                                                        <option value="sj">San Jose</option>
-                                                        <option value="ph">Philadelphia</option>
-                                                        <option value="nl">Nashville</option>
-                                                        <option value="sf">San Francisco</option>
-                                                        <option value="hu">Houston</option>
-                                                        <option value="sa">San Antonio</option>
-                                                    </select>
+                                                    <Select
+                                                        className="leaving form-control fw-bold"
+                                                        options={airportList}
+                                                        placeholder="Going To"
+                                                        styles={customStyles}
+                                                        onChange={handleDestinationChange}
+                                                        defaultValue={des}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -95,12 +191,33 @@ const ModifySearch = () => {
                                             <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8">
                                                 <div className="form-group mb-0">
                                                     <label className="text-light text-uppercase opacity-75">Journey Date</label>
-                                                    <input type="text" className="form-control fw-bold" placeholder="Check-In & Check-Out" id="checkinout" readOnly />
+                                                    <Flatpickr
+                                                        className="form-control fw-bold choosedate"
+                                                        value={depDate}
+
+                                                        onChange={handleDepartureChange}
+                                                        options={{
+                                                            dateFormat: 'Y-m-d',
+                                                            minDate: "today",
+                                                            disableMobile: true,
+                                                        }}
+                                                        render={({ defaultValue, value, ...props }, ref) => {
+                                                            return (
+                                                                <input
+                                                                    {...props}
+                                                                    ref={ref}
+                                                                    className="form-control fw-bold choosedate"// Add your custom styles
+                                                                    placeholder="Departure.."
+                                                                    type="text"
+                                                                />
+                                                            );
+                                                        }}
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4">
                                                 <div className="form-group mb-0">
-                                                    <button type="button" className="btn btn-whites text-primary full-width fw-medium">
+                                                    <button onClick={handleModifySearchSubmit} type="button" className="btn btn-whites text-primary full-width fw-medium">
                                                         <i className="fa-solid fa-magnifying-glass me-2"></i>Search
                                                     </button>
                                                 </div>

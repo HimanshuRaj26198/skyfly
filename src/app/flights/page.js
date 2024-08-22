@@ -4,7 +4,6 @@ import OfferCard from "../_components/OfferCard/page";
 import SearchFilter from "../_components/SearchFilter/page";
 import airlines from "../../../lib/airlines.json";
 import airportsDB from "../../../lib/airports.json";
-import { SampleRespone } from "../_components/response";
 
 const fetchFlightList = async (searchParams) => {
     let currency = searchParams.curr || "USD";
@@ -93,14 +92,14 @@ const FlightListPage = async ({ searchParams }) => {
     })
     return <>
         <div className="bg-primary position-relative inner-search-form-container">
-            <ModifySearch />
+            <ModifySearch trip={{ src: searchParams.src, destination: searchParams.des, departureDate: searchParams.dep }} bookingClass={searchParams.class} token={searchParams.tk} />
         </div >
         {/* <!-- ============================ All Flits Search Lists Start ================================== --> */}
         <section className="gray-simple">
             <div className="container">
                 <div className="row justify-content-between gy-4 gx-xl-4 gx-lg-3 gx-md-3 gx-4">
                     {/* <!-- Sidebar Filter Options --> */}
-                    <SearchFilter />
+                    <SearchFilter flightDataLength={FlightList.length} />
                     {/* <!-- All Flight Lists --> */}
                     <div className="col-xl-9 col-lg-8 col-md-12">
                         <div className="row align-items-center justify-content-between">
@@ -145,7 +144,7 @@ const FlightListPage = async ({ searchParams }) => {
                             {/* <!-- Single Flight --> */}
                             {/* <!-- Sidebar Filter Options --> */}
                             {FlightList && FlightList.map((a, i) => {
-                                return <FlightCard key={i} flight={a} trip={{ source: searchParams.src, des: searchParams.des }} />
+                                return <FlightCard key={i} flight={a} currency={searchParams.currency} trip={{ source: searchParams.src, des: searchParams.des }} />
                             })}
                         </div>
                     </div>

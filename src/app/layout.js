@@ -76,6 +76,8 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </div>
+        {/* <script src="assets/js/custom .js"></script> */}
+
       </body>
     </html>
   );

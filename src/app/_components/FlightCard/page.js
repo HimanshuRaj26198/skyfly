@@ -2,7 +2,7 @@
 import Link from "next/link";
 import FlightCardPrice from "../FlightCardPrice/page";
 import { useRouter } from "next/navigation";
-const FlightCard = ({ flight, trip }) => {
+const FlightCard = ({ flight, trip, currency }) => {
     const router = useRouter();
     const getFormattedDate = (date) => {
         let newDate = new Date(date)
@@ -155,7 +155,7 @@ const FlightCard = ({ flight, trip }) => {
                                 </div>
                                 <div className="text-start text-md-end">
                                     <span className="label bg-light-success text-success me-1">15% Off</span>
-                                    <FlightCardPrice price={flight.price.total} />
+                                    <FlightCardPrice price={flight.price.total} currency={currency} />
                                     <div className="text-muted text-sm mb-2">Refundable</div>
                                 </div>
 
