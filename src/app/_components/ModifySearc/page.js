@@ -119,8 +119,8 @@ const ModifySearch = ({ bookingClass, trip }) => {
         setDes(airportList.find(a => { if (a.value === trip.destination) return a }));
         let tripDate = new Date(trip.departureDate);
         setDepDate(tripDate);
-        setCountry(JSON.parse(Cookies.get('country')))
-        // setCountry(JSON.parse(localStorage.getItem("country")));
+        // setCountry(JSON.parse(Cookies.get('country')))
+        setCountry(JSON.parse(localStorage.getItem("country")));
         window.addEventListener('resize', handleResize);
         if (localStorage.getItem("token")) {
             setToken(localStorage.getItem("token"))
