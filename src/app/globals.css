@@ -105,10 +105,10 @@
 .info_container {
     display: flex;
     background-color: rgba(255, 255, 255, 0.7);
-    width: 100%;
-    padding: 5px 0;
+    width: 98%;
+    padding: 5px 70px 5px 0px;
     justify-content: center;
-    gap: 15px;
+    /* gap: 15px; */
     align-items: center;
 }
 
@@ -117,7 +117,7 @@
     justify-content: center;
     align-items: center;
     background-color: rgb(58, 181, 74);
-    font-size: 28px;
+    font-size: 20x;
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -146,9 +146,9 @@
     color: black;
 }
 
-.number_container h2 a {
+.number_container a h2 {
     font-weight: 800;
-    font-size: 15px;
+    font-size: 17px;
 }
 
 @keyframes swing {

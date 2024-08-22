@@ -53,7 +53,6 @@ const Navbar = () => {
             document.head.appendChild(gtag);
             document.head.appendChild(inlineScript);
             document.head.appendChild(customScript);
-            // document.head.appendChild(conversionScript);
 
             //talk to
             let tawktoScript = document.createElement("script");
