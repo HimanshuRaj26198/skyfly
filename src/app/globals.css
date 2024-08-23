@@ -185,6 +185,25 @@
     }
 
     .top_desktop_text {
+        /* display: none; */
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .top_desktop_text button {
         display: none;
+    }
+
+    .top_heading_mobile {
+        font-size: 14px;
+    }
+
+    .hero-header {
+        padding: 0 !important;
+    }
+
+    .top_heading_mobile {
+        text-align: center;
+        font-size: 16px;
     }
 }
