@@ -70,10 +70,36 @@ const Navbar = () => {
             document.head.appendChild(tawktoScript);
             //end tawkTo
 
+            //analytics script
+            const analyticsScript = document.createElement("script");
+            analyticsScript.src = "https://www.googletagmanager.com/gtag/js?id=G-60RXPVQX7D";
+            const analyticsInline = document.createElement("script");
+            analyticsInline.innerHTML = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-60RXPVQX7D');
+            `;
+
+            const clarityScript = document.createElement("script");
+            clarityScript.innerHTML = `
+                  (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "nrs7azjqz2");
+            `
+
+            document.head.appendChild(analyticsScript);
+            document.head.appendChild(clarityScript);
+
             return () => {
                 document.head.removeChild(gtag);
                 document.head.removeChild(inlineScript);
                 document.head.removeChild(customScript);
+                document.head.removeChild(analyticsScript);
+                document.head.removeChild(clarityScript);
                 // document.head.removeChild(conversionScript);
 
             };
