@@ -51,13 +51,16 @@ const Navbar = () => {
 
             const jqueryScript = document.createElement("script");
             jqueryScript.src = "assets/js/jquery.min.js";
-            // const customScript = document.createElement("script");
-            // customScript.src = "/assets/js/custom.js";
+            const countrScript = document.createElement("script");
+            countrScript.src = "assets/js/counterup.min.js";
+            const customScript = document.createElement("script");
+            customScript.src = "/assets/js/custom.js";
 
             document.head.appendChild(gtag);
             document.head.appendChild(inlineScript);
             document.head.appendChild(jqueryScript);
-            // document.head.appendChild(customScript);
+            document.head.appendChild(countrScript);
+            document.head.appendChild(customScript);
 
 
             //talk to
@@ -104,7 +107,7 @@ const Navbar = () => {
                 document.head.removeChild(gtag);
                 document.head.removeChild(inlineScript);
                 document.head.removeChild(jqueryScript);
-                // document.head.removeChild(customScript);
+                document.head.removeChild(countrScript);
                 document.head.removeChild(analyticsScript);
                 document.head.removeChild(clarityScript);
                 // document.head.removeChild(conversionScript);
@@ -115,6 +118,8 @@ const Navbar = () => {
     }, []);
     return <>
         <Script src="assets/js/jquery.min.js" strategy="beforeInteractive" />
+        <Script src="assets/js/counterup.min.js" strategy="beforeInteractive" />
+
         <div className={`header ${path === "/" ? 'header-transparent theme' : 'navbar-light'}`} >
             <div className="container" >
                 <nav id="navigation" className="navigation navigation-landscape">
@@ -187,7 +192,6 @@ const Navbar = () => {
                 </nav>
             </div>
         </div>
-        <Script src="assets/js/custom.js" />
     </>
 }
 

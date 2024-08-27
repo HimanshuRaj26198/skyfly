@@ -20,15 +20,63 @@ const FlightSearch = () => {
     const [country, setCountry] = useState({});
     const [loading, setLoading] = useState(false);
     const [bookingClass, setBookingClass] = useState({ label: "ECONOMY", value: "ECONOMY" });
+    const [originAirportList, setOriginAirportList] = useState([]);
+    const [desAirportList, setDesAirportList] = useState([]);
+    const [originInputValue, setOriginInputValue] = useState("");
+    const [sourceInputValue, setSourceInputValue] = useState("");
+    const [token, setToken] = useState("");
     const classList = [
         { label: "ECONOMY", value: "ECONOMY" },
         { label: "FIRST CLASS", value: "FIRST" },
         { label: "BUSINESS", value: "BUSINESS" },
         { label: "PREMIUM ECONOMY", value: "PREMIUM_ECONOMY" }
     ]
-    let airportList = Object.values(Airports).map(a => {
-        return { value: a.iata, label: `${a.city}, ${a.iata}` }
-    });
+
+    const handleInputChange = (newValue) => {
+        setOriginInputValue(newValue); // Update the local state with new input
+        filterAirports(newValue); // Fetch filtered airports based on new input
+    };
+
+    const handleSourceInputChange = (newValue) => {
+        setSourceInputValue(newValue);
+        filterSourceAirportValue(newValue);
+    }
+
+    const filterSourceAirportValue = async (value) => {
+        try {
+            console.log(token, "token")
+            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword=${value}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            let result = await response.json()
+            let options = result.data.map(a => { return { label: a.detailedName, value: a.iataCode } })
+            setDesAirportList(options);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const filterAirports = async () => {
+        console.log("searching");
+        try {
+
+            console.log(token, "token")
+            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword=${originInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            let result = await response.json()
+            let options = result.data.map(a => { return { label: a.detailedName, value: a.iataCode } })
+            setOriginAirportList(options);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     const customStyles = {
         control: (provided) => ({
@@ -89,6 +137,7 @@ const FlightSearch = () => {
         setDestination(selected);
     }
 
+
     const fetchToken = async () => {
         let body = new URLSearchParams();
         body.append("grant_type", "client_credentials");
@@ -102,6 +151,7 @@ const FlightSearch = () => {
                     body: body.toString()
                 });
             const json = await data.json();
+            setToken(json.access_token)
             localStorage.setItem("typCknhbg", json.access_token);
         } catch (err) {
             console.log(err);
@@ -109,24 +159,7 @@ const FlightSearch = () => {
     }
 
     useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const { latitude, longitude } = position.coords;
-                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-                    const data = await response.json();
-                    setCountry(Country[data.countryName]);
-                    setFlagUrl(Country[data.countryName].flag);
-                    setCurrency(Country[data.countryName].currency);
-                    console.log({ countryObj: Country[data.countryName], countryName: data.countryName }, "IN NAV");
-                    localStorage.setItem("country", JSON.stringify(Country[data.countryName]));
-                    Cookies.set("country", JSON.stringify(Country[data.countryName], { expires: 1 }));
-                },
-                (error) => console.log(error)
-            );
-        } else {
-            setError('Geolocation is not supported by this browser.');
-        }
+        setCountry(JSON.parse(localStorage.getItem("country")));
         fetchToken();
     }, [])
 
@@ -152,10 +185,11 @@ const FlightSearch = () => {
                             <div className="form-group hdd-arrow mb-0">
                                 <Select
                                     className="leaving form-control fw-bold"
-                                    options={airportList}
+                                    options={originAirportList}
                                     placeholder="Leaving..."
                                     styles={customStyles}
-                                    onChange={handleOriginChange}
+                                    onInputChange={handleInputChange}
+                                    inputValue={originInputValue}
                                 />
                             </div>
                             <div className="btn-flip-icon mt-md-0">
@@ -166,10 +200,11 @@ const FlightSearch = () => {
                             <div className="form-groupp hdd-arrow mb-0">
                                 <Select
                                     className="leaving form-control fw-bold"
-                                    options={airportList}
+                                    options={desAirportList}
                                     placeholder="Going To"
                                     styles={customStyles}
-                                    onChange={handleDestinationChange}
+                                    inputValue={sourceInputValue}
+                                    onInputChange={handleSourceInputChange}
                                 />
                             </div>
                         </div>

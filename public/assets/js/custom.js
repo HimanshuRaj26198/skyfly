@@ -34,6 +34,10 @@
 // 	});
 
 // Navigation
+
+$(document).ready(function () {
+	$('#element').rCounter(); // Ensure this matches the expected usage of the plugin
+});
 ! function (n, e, i, a) {
 	n.navigation = function (t, s) {
 		var o = {
