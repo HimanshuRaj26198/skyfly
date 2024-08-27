@@ -45,7 +45,7 @@ const FlightSearch = () => {
     const filterSourceAirportValue = async () => {
         try {
             console.log(token, "token")
-            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=${sourceInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
+            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=${sourceInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -64,7 +64,7 @@ const FlightSearch = () => {
         try {
 
             console.log(token, "token")
-            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=${originInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
+            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=${originInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -191,6 +191,7 @@ const FlightSearch = () => {
                                     styles={customStyles}
                                     onInputChange={handleInputChange}
                                     inputValue={originInputValue}
+                                    onChange={handleOriginChange}
                                 />
                             </div>
                             <div className="btn-flip-icon mt-md-0">
@@ -206,6 +207,7 @@ const FlightSearch = () => {
                                     styles={customStyles}
                                     inputValue={sourceInputValue}
                                     onInputChange={handleSourceInputChange}
+                                    onChange={handleDestinationChange}
                                 />
                             </div>
                         </div>
