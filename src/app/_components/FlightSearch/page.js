@@ -119,7 +119,7 @@ const FlightSearch = () => {
             setLoading(true);
             let token = localStorage.getItem("typCknhbg");
             let curr = localStorage.getItem("country") ? JSON.parse(localStorage.getItem("country")).currency : "USD";
-            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=${curr}&class=${bookingClass.value}`)
+            router.push(`/flights?src=${origin.value}&des=${destination.value}&dep=${departure.toISOString().substring(0, 10)}&ret=${returnD && returnD.toISOString().substring(0, 10)}&adult=${adultCount}&tk=${token}&curr=USD&class=${bookingClass.value}`)
         }
     }
     const handleDepartureChange = (selectedDates) => {
