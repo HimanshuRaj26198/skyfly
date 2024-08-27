@@ -11,9 +11,10 @@ const FlightCardPrice = ({ price, currency }) => {
     });
 
     useEffect(() => {
-        if (localStorage.getItem("country") !== undefined) {
-            setCountry(JSON.parse(localStorage.getItem("country")))
-        }
+        // if (typeof (localStorage.getItem("country")) !== undefined) {
+        //     console.log("setting country")
+        //     setCountry(JSON.parse(localStorage.getItem("country")))
+        // }
     }, [])
     return <> <div className="text-dark fs-3 fw-bold lh-base">{country.currency}{country.currencySymbol}{price}</div></>
 
