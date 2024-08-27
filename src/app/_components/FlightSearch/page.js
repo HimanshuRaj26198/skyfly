@@ -42,17 +42,17 @@ const FlightSearch = () => {
         filterSourceAirportValue(newValue);
     }
 
-    const filterSourceAirportValue = async (value) => {
+    const filterSourceAirportValue = async () => {
         try {
             console.log(token, "token")
-            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword=${value}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
+            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=${sourceInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 }
             });
             let result = await response.json()
-            let options = result.data.map(a => { return { label: a.detailedName, value: a.iataCode } })
+            let options = result.data.map(a => { return { label: `${a.iataCode} - ${a.name}, ${a.address.cityName}, ${a.address.countryCode}`, value: a.iataCode } })
             setDesAirportList(options);
         } catch (err) {
             console.log(err);
@@ -64,14 +64,15 @@ const FlightSearch = () => {
         try {
 
             console.log(token, "token")
-            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword=${originInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
+            let response = await fetch(`https://api.amadeus.com/v1/reference-data/locations?subType=AIRPORT&keyword=${originInputValue}&page%5Blimit%5D=10&page%5Boffset%5D=0&sort=analytics.travelers.score&view=FULL`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 }
             });
             let result = await response.json()
-            let options = result.data.map(a => { return { label: a.detailedName, value: a.iataCode } })
+            let options = result.data.map(a => { return { label: `${a.iataCode} - ${a.name}, ${a.address.cityName}, ${a.address.countryCode}`, value: a.iataCode } });
+            console.log(result.data);
             setOriginAirportList(options);
         } catch (err) {
             console.log(err);
