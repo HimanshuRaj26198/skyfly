@@ -22,7 +22,6 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <head>
           {/* All Plugins */}
-          <script id="truendoAutoBlock" type="text/javascript" src="https://cdn.priv.center/pc/truendo_cmp.pid.js" data-siteid="6b331cb0-5579-4693-b0c6-7d75e1c78924"></script>
           <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
           <link href="/assets/css/animation.css" rel="stylesheet" />
           <link href="/assets/css/dropzone.min.css" rel="stylesheet" />
