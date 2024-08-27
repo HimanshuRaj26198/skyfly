@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
+import Country from "../../../../lib/countryFlag.json";
 const FlightDetail = () => {
     const [flight, setFlight] = useState(null);
     const [travellers, setTravellers] = useState([]);
@@ -14,7 +15,7 @@ const FlightDetail = () => {
     const [gender, setGender] = useState("Male");
     const emailRef = useRef("");
     const mobNo = useRef("");
-    const [country, setCountry] = useState(null);
+    const [country, setCountry] = useState(Country["United States of America (the)"]);
     const [filledNum, setFilledNum] = useState(false);
     const contactName = useRef("");
     const contactLastname = useRef("");
@@ -164,7 +165,25 @@ const FlightDetail = () => {
 
     useEffect(() => {
         setFlight(JSON.parse(localStorage.getItem("selectedFlight")));
-        setCountry(JSON.parse(localStorage.getItem("country")));
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+                    const data = await response.json();
+                    setCountry(data.countryName);
+                    setFlagUrl(Country[data.countryName].flag);
+                    setCurrency(Country[data.countryName].currency);
+                    console.log({ countryObj: Country[data.countryName], countryName: data.countryName }, "IN NAV");
+                    localStorage.setItem("country", JSON.stringify(Country[data.countryName]));
+                    Cookies.set("country", JSON.stringify(Country[data.countryName], { expires: 1 }));
+                },
+                (error) => console.log(error)
+            );
+        } else {
+            setError('Geolocation is not supported by this browser.');
+        }
         // if (document) {
         //     let script = document.createElement("script");
         //     script.type = "text/javascript";
@@ -564,15 +583,15 @@ const FlightDetail = () => {
                                             <ul className="list-group">
                                                 <li className="list-group-item d-flex justify-content-between align-items-center border-0 py-2 px-0">
                                                     Base Fare
-                                                    {flight && <span className="fw-semibold text-dark">{country.currencySymbol}{flight.price.base}</span>}
+                                                    {flight && <span className="fw-semibold text-dark">{country && country.currencySymbol}{flight.price.base}</span>}
                                                 </li>
                                                 <li className="list-group-item d-flex justify-content-between align-items-center border-0 py-2 px-0">
                                                     Discount
-                                                    {flight && <span className="fw-semibold text-success">-{country.currencySymbol}0</span>}
+                                                    {flight && <span className="fw-semibold text-success">-{country && country.currencySymbol}0</span>}
                                                 </li>
                                                 <li className="list-group-item d-flex justify-content-between align-items-center border-0 py-2 px-0">
                                                     Other Services
-                                                    {flight && <span className="fw-semibold text-dark">{country.currencySymbol}{flight.price.total - flight.price.base}</span>}
+                                                    {flight && <span className="fw-semibold text-dark">{country && country.currencySymbol}{flight.price.total - flight.price.base}</span>}
                                                 </li>
                                             </ul>
                                         </div>
@@ -580,7 +599,7 @@ const FlightDetail = () => {
                                     <div className="card-footer bg-white border-top py-3">
                                         <div className="d-flex align-items-center justify-content-between">
                                             <p className="fw-semibold text-muted-2 mb-0">Total Price</p>
-                                            {flight && <p className="fw-semibold text-primary mb-0">{country.currencySymbol}{flight.price.total}</p>}
+                                            {flight && <p className="fw-semibold text-primary mb-0">{country && country.currencySymbol}{flight.price.total}</p>}
                                         </div>
                                     </div>
                                 </div>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Country from "../../../../lib/countryFlag.json";
 import Link from "next/link";
 import Cookies from 'js-cookie';
+import Script from "next/script";
 
 
 
@@ -47,12 +48,17 @@ const Navbar = () => {
     
             gtag('config', 'AW-16665917801');`
 
-            const customScript = document.createElement("script");
-            customScript.src = "/assets/js/custom.js";
+
+            const jqueryScript = document.createElement("script");
+            jqueryScript.src = "assets/js/jquery.min.js";
+            // const customScript = document.createElement("script");
+            // customScript.src = "/assets/js/custom.js";
 
             document.head.appendChild(gtag);
             document.head.appendChild(inlineScript);
-            document.head.appendChild(customScript);
+            document.head.appendChild(jqueryScript);
+            // document.head.appendChild(customScript);
+
 
             //talk to
             let tawktoScript = document.createElement("script");
@@ -97,7 +103,8 @@ const Navbar = () => {
             return () => {
                 document.head.removeChild(gtag);
                 document.head.removeChild(inlineScript);
-                document.head.removeChild(customScript);
+                document.head.removeChild(jqueryScript);
+                // document.head.removeChild(customScript);
                 document.head.removeChild(analyticsScript);
                 document.head.removeChild(clarityScript);
                 // document.head.removeChild(conversionScript);
@@ -106,17 +113,57 @@ const Navbar = () => {
         };
 
     }, []);
-    return <div className={`header ${path === "/" ? 'header-transparent theme' : 'navbar-light'}`} >
-        <div className="container" >
-            <nav id="navigation" className="navigation navigation-landscape">
-                <div className="nav-header">
-                    <a className="nav-brand static-show" href="#">
-                        <img src="/assets/images/skyfly-logo.png" className="logo" alt="" /></a>
-                    <a className="nav-brand mob-show" href="#">
-                        <img src="/assets/images/skyfly-logo.png" className="logo" alt="" /></a>
-                    <div className="nav-toggle"></div>
-                    <div className="mobile_nav">
-                        <ul>
+    return <>
+        <Script src="assets/js/jquery.min.js" strategy="beforeInteractive" />
+        <div className={`header ${path === "/" ? 'header-transparent theme' : 'navbar-light'}`} >
+            <div className="container" >
+                <nav id="navigation" className="navigation navigation-landscape">
+                    <div className="nav-header">
+                        <a className="nav-brand static-show" href="#">
+                            <img src="/assets/images/skyfly-logo.png" className="logo" alt="" /></a>
+                        <a className="nav-brand mob-show" href="#">
+                            <img src="/assets/images/skyfly-logo.png" className="logo" alt="" /></a>
+                        <div className="nav-toggle"></div>
+                        <div className="mobile_nav">
+                            <ul>
+                                <li className="currencyDropdown me-2">
+                                    <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#currencyModal"><span
+                                        className="fw-medium">{currency}</span></a>
+                                </li>
+                                <li className="languageDropdown me-2">
+                                    <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#countryModal">
+                                        <img src={flagUrl} className="img-fluid" width="17" alt="Country" /></a>
+                                </li>
+                                <li>
+                                    <a href="#" className="bg-light-primary text-primary rounded" data-bs-toggle="modal"
+                                        data-bs-target="#login"><i className="fa-regular fa-circle-user fs-6"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="nav-menus-wrapper" style={{ transitionProperty: "none" }}>
+                        <ul className="nav-menu">
+
+                            <li><Link href="/">Home<span className="submenu-indicator"></span></Link>
+                            </li>
+
+                            <li><a href="JavaScript:Void(0);">About Us<span className="submenu-indicator"></span></a>
+
+                            </li>
+
+                            <li><a href="JavaScript:Void(0);">Pages<span className="submenu-indicator"></span></a>
+
+                            </li>
+
+                            <li><a href="JavaScript:Void(0);">Menu<span className="submenu-indicator"></span></a>
+
+                            </li>
+
+                            <li><a href="documantion/index.html" target="_blank">Docs</a></li>
+
+                        </ul>
+
+                        <ul className="nav-menu nav-menu-social align-to-right">
                             <li className="currencyDropdown me-2">
                                 <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#currencyModal"><span
                                     className="fw-medium">{currency}</span></a>
@@ -125,59 +172,23 @@ const Navbar = () => {
                                 <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#countryModal">
                                     <img src={flagUrl} className="img-fluid" width="17" alt="Country" /></a>
                             </li>
-                            <li>
-                                <a href="#" className="bg-light-primary text-primary rounded" data-bs-toggle="modal"
-                                    data-bs-target="#login"><i className="fa-regular fa-circle-user fs-6"></i></a>
+                            <li style={{ marginRight: "5px" }} className="list-buttons">
+                                <a href="#" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login"><i
+                                    className="fa-regular fa-circle-user fs-6 me-2"></i>Sign In / Register</a>
+                            </li>
+                            <li className="list-buttons">
+                                <a style={{ display: "flex", flexDirection: "column", fontSize: "18px" }} href="tel:+1 (888) 267-5955" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login">
+                                    <span style={{ fontSize: "8px" }} >Call 24/7 for our best deals</span>
+                                    +1 (888) 267-5955
+                                </a>
                             </li>
                         </ul>
                     </div>
-                </div>
-                <div className="nav-menus-wrapper" style={{ transitionProperty: "none" }}>
-                    <ul className="nav-menu">
-
-                        <li><Link href="/">Home<span className="submenu-indicator"></span></Link>
-                        </li>
-
-                        <li><a href="JavaScript:Void(0);">About Us<span className="submenu-indicator"></span></a>
-
-                        </li>
-
-                        <li><a href="JavaScript:Void(0);">Pages<span className="submenu-indicator"></span></a>
-
-                        </li>
-
-                        <li><a href="JavaScript:Void(0);">Menu<span className="submenu-indicator"></span></a>
-
-                        </li>
-
-                        <li><a href="documantion/index.html" target="_blank">Docs</a></li>
-
-                    </ul>
-
-                    <ul className="nav-menu nav-menu-social align-to-right">
-                        <li className="currencyDropdown me-2">
-                            <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#currencyModal"><span
-                                className="fw-medium">{currency}</span></a>
-                        </li>
-                        <li className="languageDropdown me-2">
-                            <a href="#" className="nav-link" data-bs-toggle="modal" data-bs-target="#countryModal">
-                                <img src={flagUrl} className="img-fluid" width="17" alt="Country" /></a>
-                        </li>
-                        <li style={{ marginRight: "5px" }} className="list-buttons">
-                            <a href="#" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login"><i
-                                className="fa-regular fa-circle-user fs-6 me-2"></i>Sign In / Register</a>
-                        </li>
-                        <li className="list-buttons">
-                            <a style={{ display: "flex", flexDirection: "column", fontSize: "18px" }} href="tel:+1 (888) 267-5955" className="bg-primary" data-bs-toggle="modal" data-bs-target="#login">
-                                <span style={{ fontSize: "8px" }} >Call 24/7 for our best deals</span>
-                                +1 (888) 267-5955
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
+        <Script src="assets/js/custom.js" />
+    </>
 }
 
 

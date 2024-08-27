@@ -109,7 +109,24 @@ const FlightSearch = () => {
     }
 
     useEffect(() => {
-        setCountry(JSON.parse(localStorage.getItem("country")));
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+                    const data = await response.json();
+                    setCountry(Country[data.countryName]);
+                    setFlagUrl(Country[data.countryName].flag);
+                    setCurrency(Country[data.countryName].currency);
+                    console.log({ countryObj: Country[data.countryName], countryName: data.countryName }, "IN NAV");
+                    localStorage.setItem("country", JSON.stringify(Country[data.countryName]));
+                    Cookies.set("country", JSON.stringify(Country[data.countryName], { expires: 1 }));
+                },
+                (error) => console.log(error)
+            );
+        } else {
+            setError('Geolocation is not supported by this browser.');
+        }
         fetchToken();
     }, [])
 
