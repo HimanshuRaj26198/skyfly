@@ -55,14 +55,8 @@ export default function RootLayout({ children }) {
                         `,
             }}
           />
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-PR7RP7NQ"
-              height="0"
-              width="0"
-              style={{ display: 'none', visibility: 'hidden' }}
-            ></iframe>
-          </noscript>
+          <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PR7RP7NQ"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           <script src="assets/js/jquery.min.js" ></script>
           <script src="assets/js/popper.min.js"></script>
@@ -70,9 +64,6 @@ export default function RootLayout({ children }) {
           <script src="assets/js/dropzone.min.js"></script>
           <script src="assets/js/flatpickr.js"></script>
           <script src="assets/js/lightbox.min.js"></script>
-          <script src="assets/js/rangeslider.js"></script>
-          <script src="assets/js/select2.min.js"></script>
-          <script src="assets/js/counterup.min.js"></script>
           <script src="assets/js/prism.js"></script>
           {/* End Google tag manager */}
           {/* Custom Css */}

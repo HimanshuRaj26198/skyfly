@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import Country from "../../../../lib/countryFlag.json";
+import { useRef } from "react";
 const FlightDetail = () => {
     const [flight, setFlight] = useState(null);
     const [travellers, setTravellers] = useState([]);
